@@ -8,11 +8,12 @@ void appendFiles(char source[], char destination[])
     FILE *fp1, *fp2;
     
     // open files
-    fp1 = fopen("final.txt", "a+");
-    fp2 = fopen("final_new_language.c", "a+" );
+    fp1 = fopen("final.txt", "r");
+    fp2 = fopen("final_new_language.c", "w" );
 
     // file not found
-    if(!fp1 && !fp2)
+    // Check for the case that either file was not found
+    if(!fp1 || !fp2)
     {
         printf("Unable to open/" "detect file(s)\n");
         return;
@@ -26,19 +27,10 @@ void appendFiles(char source[], char destination[])
     // writing from source file to new file
     while(!feof(fp1))
     {
-        fgets(buf,sizeof(buf), fp1);
-        fprintf(fp2, "%s", buf);
+        if(fgets(buf,sizeof(buf), fp1)) {
+            fprintf(fp2, "%s", buf);
+        }
     }
-
-    rewind(fp2);
-
-    // printing to new file
-    while(!feof(fp2))
-    {
-        fgets(buf,sizeof(buf), fp2);
-        fprintf("%s", buf);
-    }
-
 }
 
 int main(int argc, char* argv[argc+1])
